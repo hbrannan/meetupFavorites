@@ -75,8 +75,7 @@ const removeFavorite = (uId, eventId) => {
   console.log('REMOVE fave');
   return db.Favorites.destroy({
     where: {
-      event: eventId,
-      userId: uId
+      event: eventId
     }
   })
   .then(data => data)
