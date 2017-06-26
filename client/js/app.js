@@ -6,6 +6,7 @@
     $user,
     currentUser  = null,
     currentUserFavorites = {},
+    currentData = {},
     months       = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], //Short-hand months for display.
     spinner_opts = { lines: 13, length: 20, width: 10, radius: 60, color: '#333', className: 'spinner' }; //Options for spin.js.
 
@@ -15,16 +16,34 @@
       e.preventDefault();
     }
 
-    var submittedTopic = $topic.val().toLowerCase()
-
-    if ( submittedTopic === 'favorites' || submittedTopic === 'my favorites') {
-      console.log('specail case');
-      //render only my favorites
-    }
+    var submittedTopic = $topic.val().toLowerCase();
 
     //spin.js -- http://fgnass.github.io/spin.js/
     new Spinner(spinner_opts).spin($events[0]);
 
+
+    //Get favorites information for currentUser if set.
+    if (currentUser) {
+
+      if ( submittedTopic === 'favorites' || submittedTopic === 'my favorites') {
+        console.log('in')
+        renderEvents(currentData, currentUserFavorites, true);
+        return;
+      }
+
+      $.ajax({
+        method: 'GET',
+        url: '/favorites',
+        data: { 'user' : currentUser },
+        success: function (responseObj){
+          currentUserFavorites = responseObj.favorites;
+          console.log('successFaveList', currentUserFavorites);
+        },
+        error: function (err){console.log(err)}
+      });
+    }
+
+    //Get API information based on topic.
     $.ajax({
       url:"http://api.meetup.com/2/open_events/?callback=?",
       data: {
@@ -35,41 +54,25 @@
         time:"1w,"
       },
       dataType:"json",
-      success: renderEvents,
+      success: function (data) {
+        currentData = data;
+        // if ( submittedTopic === 'favorites' || submittedTopic === 'my favorites') {
+        //   console.log(submittedTopic);
+        //   renderEvents(data, currentUserFavorites, true);
+        // } else {
+          renderEvents(data, currentUserFavorites);
+        // }
+      },
       error: ajaxError
     });
-
-//MODIFY RENDER EVENTS, so you can handle data.api & data.db
-
-    if (currentUser) {
-      console.log('registered current user and recalling render', currentUser)
-      $.ajax({
-        method: 'GET',
-        url: '/favorites',
-        data: { 'user' : currentUser },
-        success: function (responseObj){
-          currentUserFavorites = responseObj.favorites;
-          console.log('successFaveList', responseObj.favorites);
-          // if ($topic === 'favorites') {
-          //   console.log('specail case');
-          // //   renderFavoritesList(userFavorites);
-          // } // else {
-          //   renderEvents(responseObj.favorites);
-          // }
-        },
-        error: function (err){console.log(err)}
-      });
-    }
-
   };
 
-  const renderFavoritesList = (favoritesList) => {
-    console.log('render faves only');
-  };
+  const renderEvents = function(data, favorites, displayOnlyFavorites) {
+    //data is an Object {results:[{},{},{}], meta:?};
+    //if you are only displaying favorites, filter out non_needed data (which, bc in array will be a linear sort anyway)
 
-  const renderEvents = function(data) {
-    console.log('events data', data);
-    // var favorited = data.favoriteList;
+    var renderData = [];
+    console.log(currentUser, data, favorites);
 
     //Make sure there are events and that there isn't an error.
     if (typeof(data.results) !== "undefined" && data.meta.count > 0) {
@@ -81,13 +84,21 @@
 
         e.month = months[date.getMonth()]
         e.date =  date.getDate();
-        if (currentUserFavorites[e.id]){
+        if (favorites[e.id]){
+          console.log('one exists');
+          renderData.push(e);
           e.favoritedStatus = '★';
         } else {
           e.favoritedStatus = '☆';
         }
-
       }
+
+      if (displayOnlyFavorites){
+        console.log('specail case', renderData);
+        data.results = renderData;
+      }
+
+      console.log('renderData', renderData);
 
       $events.html(Mustache.render(template, data));
 
@@ -156,7 +167,6 @@
     });
 
     $signIn.submit(function (e){
-      console.log('submitted')
       e.preventDefault();
       var userEntered = JSON.stringify($user.val());
 
@@ -167,14 +177,12 @@
         dataType: 'json',
         success: function(responseObj) {
           currentUser = responseObj.userId;
-          console.log('in User/POST succ.', responseObj.userId, currentUser);
           getEvents();
         },
         error: function(xhr, ajaxOptions, thrownError) {
          console.log(xhr.responseText);
        }
       });
-
     });
 
   });

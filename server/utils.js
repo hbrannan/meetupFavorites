@@ -36,7 +36,11 @@ const getFavorites = (userId) => {
   console.log('getting faves for user: utils28 for:', userId);
   //TODO: really only want the 'event' STRING from line 30;
   return currentUser.getFavorites() //TRY: getFavorites('event')
-  .then(list => list)
+  .then(list => {
+    var newList = {};
+    list.forEach(val =>{newList[val.event] = val.id});
+    return newList;
+  })
   .catch(err => err);
 };
 
