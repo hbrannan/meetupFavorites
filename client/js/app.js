@@ -58,7 +58,7 @@
 
     //Get API information based on topic.
     $.ajax({
-      url:"http://api.meetup.com/2/open_events/?callback=?",
+      url:"https://api.meetup.com/2/open_events/?callback=?",
       data: {
         zip:"10012",
         text:$topic.val(),

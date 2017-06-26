@@ -3,3 +3,4 @@
 *.swo
 node_modules
 database.sqlite
+npm-debug.log
