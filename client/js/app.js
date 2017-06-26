@@ -49,7 +49,6 @@
       });
 
       //TODO: refactor the flow of conditional render call to asynchronous, refactor render func. to not need redundant data in this case.
-
       if ( submittedTopic === 'favorites' || submittedTopic === 'my favorites') {
         renderEvents(currentUserFavorites, currentUserFavorites);
         return;
@@ -77,8 +76,6 @@
 
   var renderEvents = function(data, favorites) {
 
-    console.log('rendercall', data);
-
     //Make sure there are events and that there isn't an error.
     if (typeof(data.results) !== "undefined" && data.meta.count > 0) {
 
@@ -95,7 +92,6 @@
         } else {
           e.favoritedStatus = '☆';
         }
-        console.log('each', e)
       }
 
 
@@ -153,14 +149,14 @@
           user_id: currentUser,
           event_info: eventInfo
         },
-        success: function (data){console.log(data)},
-        error: function (err){console.log(err)}
+        success: function (data){console.log('markFavorite', data)},
+        error: function (err){console.log('markFavorite', err)}
       });
 
     } else {
       //TODO: add additional styles to make Sign In more visible & effective. Ex:
       // only sign in  `page` -> only content || centered, position fixed until signed in, then hidden
-      console.log('no user is registered yet.. must sign in!')
+      console.log('no user is registered yet.. must sign in!');
       $formResponse.removeClass('hidden');
       $formResponse.addClass('visible');
     }

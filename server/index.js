@@ -26,26 +26,25 @@ app.use(express.static(path.join(__dirname, '/../client')));
 
 /*** ROUTES ***/
 //*CLIENT
-app.get('/', function (req, res){
+app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '/../client/index.html'));
 });
 
-app.get('/favicon.ico', function (req, res){
+app.get('/favicon.ico', function (req, res) {
   res.send('No favicon.');
 });
 
 //*USERS
-app.post('/users', function (req, res){
+app.post('/users', function (req, res) {
   utils.getUser(req.body.user)
     .then(userId => {
-      console.log('users', userId)
       res.status(200).send({'userId': userId});
     })
     .catch(err => res.status(500).send(err));
 });
 
 //*FAVORITES
-app.get('/favorites', function (req, res){
+app.get('/favorites', function (req, res) {
   if (!req.query){
     res.status(400).send({err: 'userId must be passed'});
   } else { //TODO: send back as results.data
@@ -55,9 +54,8 @@ app.get('/favorites', function (req, res){
   }
 });
 
-app.post('/favorites', function (req, res){
-  console.log('post to svr/favorites');
-  if (!req.body){
+app.post('/favorites', function (req, res) {
+  if (!req.body) {
     res.status(400).send({err: 'eventId string and userId must be passed'});
   }
   utils.checkFavorite(req.body.user_id, req.body.event_id, req.body.event_info)

@@ -10,7 +10,6 @@ const getUser = (postedUsername) => {
   })
   .then(user => {
     if (user) {
-      console.log(user.dataValues)
       currentUser = user;
       return user.get('id');
     } else {
@@ -24,7 +23,6 @@ const createUser = (postedUsername) => {
   return db.Users.create({ username: postedUsername })
   .then(user => {
     currentUser = user;
-    console.log(user.get('username'), user.dataValues)
     return user.get('id')
   })
   .catch(err => err);
@@ -85,7 +83,6 @@ const removeFavorite = (uId, eventId) => {
 };
 
 const postFavorite = (uId, eventId, eventInfo) => {
-  console.log('UTILS 80:', uId, eventId, eventInfo);
   return db.Favorites.create({event: eventId, event_info: eventInfo})
   .then(favorite => currentUser.addFavorite(favorite))
   .then(data => data)
