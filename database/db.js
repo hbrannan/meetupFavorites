@@ -27,9 +27,9 @@ const Favorite = sequelize.define('favorites', {
     type:Sequelize.STRING
   }
 });
-//Does user haveMany Favorites or belong to many favorites?
-User.belongsToMany(Favorite, {through: 'UserFavorite'});
-Favorite.belongsToMany(User, {through: 'UserFavorite'});
+
+User.belongsToMany(Favorite, {through: 'users_favorites'});
+Favorite.belongsToMany(User, {through: 'users_favorites'});
 
 sequelize.sync();
 //FOR DEV:

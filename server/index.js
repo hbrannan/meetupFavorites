@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const utils = require('./utils.js');
 const Promise = require('bluebird');
+const path = require('path');
 
 /*** VARIABLES ***/
 var port = 3000;
@@ -21,12 +22,12 @@ var allowCrossDomain = function (req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(allowCrossDomain);
-app.use(express.static(__dirname + '/client'));
+app.use(express.static(path.join(__dirname, '/../client')));
 
 /*** ROUTES ***/
 //*CLIENT
 app.get('/', function (req, res){
-  res.sendFile(__dirname + '../client/index.html');
+  res.sendFile(path.join(__dirname, '/../client/index.html'));
 });
 
 //*USERS

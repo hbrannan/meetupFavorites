@@ -156,6 +156,7 @@
     });
 
     $signIn.submit(function (e){
+      console.log('submitted')
       e.preventDefault();
       var userEntered = JSON.stringify($user.val());
 
