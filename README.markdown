@@ -1,49 +1,32 @@
 Full Stack Demo Project
 =======================
 
-Greetings, full-stack traveler.
+Greetings, Meetup!
 
 This bundle includes a static HTML, browser-based app that searches
 for upcoming Meetups using the Meetup API's [Open Events][events]
-method. Open `index.html` in a web browser to try for yourself!
+method. Open [the app][https://meetupfaves.herokuapp.com/] to try for yourself!
 
-It also uses our locally-grown CSS framework, [Sassquatch][sassquatch].
+It uses Meetup's locally-grown CSS framework, [Sassquatch][sassquatch].
+
+It also inclues a favorites web API which supports:
+  - user "login" (MPV-lite style: just based on username for now)
+  - toggling event-favorited statuses for each user
+  - fetching users' favorites
+
+Additionally, users may list all their favorited Meetups by seraching for
+'favorites' or 'my favorites' in the topics input box.
 
 Favorite Quest
 --------------
 
-The starter project is pretty good for finding Meetups, but its name
-hints at broader aspirations. We'd like you to help *Meetup Faves*
-live up to that name.
+The starter project is pretty good, but it still has broader aspirations.
+My most pressing TODOs:
+  - Testing! I'm aching to get cracking at some testing for these features!
+  - Improved UX: I want the difference between sign in and the rest of the app to be much clearer! Perhaps separating out into two 'screens'
+  - App.js better handling of asynchronous requests. The successive ajax requests from app.js lines 34-74 need to be improved by chaining them together though callbacks, rather than betting on sufficient response times.
+  - Improved responsive styles: I noticed at small mobile, a style [bug][https://cl.ly/0T2g3l1u2C34] wheretext bled out of boxes.
 
-With the software stack of your choice, implement a feature to record
-selected Meetups as the user's favorites. You may want to use empty
-and filled (☆ ★) stars to indicate their status.
-
-The favorite status should be persisted to a data store *outside* the
-browser. Providing a favorites web API and toggling event statuses
-with Ajax seems like a pretty good idea to us, but, it's your project.
-
-Additionally, your users may want to list all their favorite Meetups
-without having to find them through text search results. You could
-treat "favorites" as a special kind of search, for example.
-
-Whose favorites?
-----------------
-
-For this project you may assume that all users will have their own
-application and data store instance, or that all users will be happy
-to share the same set of favorites. Or you could use a stack's built
-in user account management. It's really up to you! (We just want to
-see your code.)
-
-Turning in the test
--------------------
-
-Your time is valuable -- so we'd like you to spend **no more than 3
-hours** on this project. When you're at a good stopping point, zip it
-up and e-mail it back along with a URL to where your test is running, 
-or an easy way to provision it (vagrant, etc).
 
 Thanks, and good luck!
 
