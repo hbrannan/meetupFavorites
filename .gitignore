@@ -1,0 +1,5 @@
+.DS_store
+*.swp
+*.swo
+node_modules
+database.sqlite

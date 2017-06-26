@@ -1,0 +1,11 @@
+{
+  "name": "full-stack-test-master",
+  "version": "1.0.0",
+  "description": "Full Stack Demo Project =======================",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "hannahbrannan@gmail.com",
+  "license": "ISC"
+}
