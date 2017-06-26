@@ -13,6 +13,14 @@
     <body>
     <div class="doc-box">
       <div class="doc-content">
+        <form id="user-signin">
+          <input type="text" class="span-50 inline-block margin-right" id="user" placeholder="Sign in to save your faves!" />
+          <div class="form-response hidden">You must be signed in to mark your faves!</div>
+        </form>
+      </div>
+    </div>
+    <div class="doc-box">
+      <div class="doc-content">
         <h1>Meetup Faves</h1>
       </div>
       <div class="doc-content">
@@ -45,7 +53,10 @@
               <div class="figureset-description">
                 <h3><a href="{{event_url}}">{{name}}</a></h3>
                 <div class="muted">{{group.name}}</div>
-                <div class="yes">{{yes_rsvp_count}} {{group.who}} Going</div>
+                <div class="figureset-lastLine">
+                  <span class="yes">{{yes_rsvp_count}} {{group.who}} Going</span>
+                  <span id="{{id}}" class="favoritedStatus">☆</span>
+                </div>
               </div>
             </div>
           </li>

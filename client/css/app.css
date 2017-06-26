@@ -12,9 +12,20 @@ body {
   border-top:none;
 }
 
+.figureset-lastLine {
+  display: flex;
+  justify-content: space-between;
+  color:rgba(226, 55, 60, 1);
+  font-weight:bold;
+}
+
 .yes {
   color:rgba(226, 55, 60, 1);
   font-weight:bold;
+}
+
+.favoritedStatus {
+  margin: 0 25px;
 }
 
 .visible {

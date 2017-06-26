@@ -124,7 +124,7 @@
     $signIn = $('#user-signin');
     $user = $('#user');
 
-    $events.on('click', '.favorited', function (e) {
+    $events.on('click', '.favoritedStatus', function (e) {
       var $el = $(this);
       var text = $el.text();
       var eventId = $el.attr('id');
