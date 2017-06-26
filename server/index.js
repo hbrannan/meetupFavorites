@@ -5,7 +5,7 @@ const Promise = require('bluebird');
 const path = require('path');
 
 /*** VARIABLES ***/
-var port = process.env.port || 3000;
+var port = process.env.PORT || 3000;
 var app = express();
 var allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -28,6 +28,10 @@ app.use(express.static(path.join(__dirname, '/../client')));
 //*CLIENT
 app.get('/', function (req, res){
   res.sendFile(path.join(__dirname, '/../client/index.html'));
+});
+
+app.get('/favicon.ico', function (req, res){
+  res.send('No favicon.');
 });
 
 //*USERS
