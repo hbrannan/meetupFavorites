@@ -5,7 +5,7 @@ const Promise = require('bluebird');
 const path = require('path');
 
 /*** VARIABLES ***/
-var port = 3000;
+var port = process.env.port || 3000;
 var app = express();
 var allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -44,7 +44,7 @@ app.post('/users', function (req, res){
 app.get('/favorites', function (req, res){
   if (!req.query){
     res.status(400).send({err: 'userId must be passed'});
-  } else {
+  } else { //TODO: send back as results.data
     utils.getFavorites(req.query.user)
     .then(favoritesList => res.status(200).send({favorites: favoritesList}))
     .catch(err => res.status(500).send({err: 'Server error has occurred.'}));
@@ -52,11 +52,11 @@ app.get('/favorites', function (req, res){
 });
 
 app.post('/favorites', function (req, res){
-  console.log('post to svr/favorites', req.body);
+  console.log('post to svr/favorites');
   if (!req.body){
     res.status(400).send({err: 'eventId string and userId must be passed'});
   }
-  utils.checkFavorite(req.body.user_id, req.body.event_id)
+  utils.checkFavorite(req.body.user_id, req.body.event_id, req.body.event_info)
     .then(data => res.status(200).send({ data: data }))
     .catch(err => res.status(500).send({err: err}));
 });

@@ -9,7 +9,6 @@ const getUser = (postedUsername) => {
     }
   })
   .then(user => {
-    console.log('GETUSR');
     if (user) {
       console.log(user.dataValues)
       currentUser = user;
@@ -22,7 +21,6 @@ const getUser = (postedUsername) => {
 };
 
 const createUser = (postedUsername) => {
-  console.log('CREATE USR')
   return db.Users.create({ username: postedUsername })
   .then(user => {
     currentUser = user;
@@ -33,20 +31,22 @@ const createUser = (postedUsername) => {
 };
 
 const getFavorites = (userId) => {
-  console.log('getting faves for user: utils28 for:', userId);
-  //TODO: really only want the 'event' STRING from line 30;
-  return currentUser.getFavorites() //TRY: getFavorites('event')
+  return currentUser.getFavorites()
   .then(list => {
-    var newList = {};
-    list.forEach(val =>{newList[val.event] = val.id});
+    var newList = {
+      results: [],
+      meta: {}
+    };
+    list.forEach(val => {
+      newList[val.event] = val.id;
+      newList.results.push(val.event_info);
+    });
     return newList;
   })
   .catch(err => err);
 };
 
-const checkFavorite = (uId, eventApiId) => {
-  console.log('QUERY fave');
-  //TODO: FIX!!!
+const checkFavorite = (uId, eventApiId, eventInfo) => {
   return db.Favorites.findOne({
     where : {
       event: eventApiId
@@ -62,21 +62,19 @@ const checkFavorite = (uId, eventApiId) => {
   })
   .then(favorite => {
     if ( favorite ) {
-      console.log('FOUND, utils:54')
       return removeFavorite(uId, eventApiId);
     } else {
-      console.log('NOT FOUND, NOT ERR, utils:57')
-      return postFavorite(uId, eventApiId);
+      return postFavorite(uId, eventApiId, eventInfo);
     }
   })
   .catch(err => {
-    console.log('ERR: utils:62',err);
-    return postFavorite(uId, eventId);
+    //TODO: factor out postFavorite here; rather, send back and handle error.
+     postFavorite(uId, eventId);
+     return err;
   });
 };
 
 const removeFavorite = (uId, eventId) => {
-  console.log('REMOVE fave');
   return db.Favorites.destroy({
     where: {
       event: eventId
@@ -86,9 +84,9 @@ const removeFavorite = (uId, eventId) => {
   .catch(err => err);
 };
 
-const postFavorite = (uId, eventId) => {
-  console.log('POSTING FAVORITE')
-  return db.Favorites.create({event: eventId})
+const postFavorite = (uId, eventId, eventInfo) => {
+  console.log('UTILS 80:', uId, eventId, eventInfo);
+  return db.Favorites.create({event: eventId, event_info: eventInfo})
   .then(favorite => currentUser.addFavorite(favorite))
   .then(data => data)
   .catch(err => err);

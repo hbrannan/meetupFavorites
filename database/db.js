@@ -1,6 +1,9 @@
 const Sequelize = require('sequelize');
+const dbName = process.env.dbName || 'user_favorites';
+const dbUsr = process.env.dbUsr || 'usr';
+const dbPwd = process.env.dbPwd || 'pwd';
 
-const sequelize = new Sequelize('user_favorites', 'usr', 'pwd', {
+const sequelize = new Sequelize(dbName, dbUsr, dbPwd, {
   host: 'localhost',
   dialect: 'sqlite',
   storage: './database.sqlite'
@@ -25,6 +28,9 @@ const Favorite = sequelize.define('favorites', {
   },
   event: {
     type:Sequelize.STRING
+  },
+  event_info: {
+    type: Sequelize.STRING
   }
 });
 
@@ -32,9 +38,6 @@ User.belongsToMany(Favorite, {through: 'users_favorites'});
 Favorite.belongsToMany(User, {through: 'users_favorites'});
 
 sequelize.sync();
-//FOR DEV:
-// sequelize.drop()
-
 
 module.exports = {
   Users: User,
